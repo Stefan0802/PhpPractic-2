@@ -23,6 +23,7 @@
         <?php
         else:
             ?>
+            <a href="<?= app()->route->getUrl('/admin') ?>">админка</a>
             <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->name ?>)</a>
         <?php
         endif;

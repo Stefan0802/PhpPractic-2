@@ -51,9 +51,7 @@ class Site
 
     public function admin(Request $request): string
     {
-//        if ($request->method === 'GET') {
-//
-//        }
-        return new View('site.admin');
+        $users = User::all();
+        return (new View())->render('site.admin', ['users' => $users]);
     }
 }

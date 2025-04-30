@@ -14,6 +14,8 @@ class User extends Model implements IdentityInterface
     public $timestamps = false;
     protected $fillable = [
         'name',
+        'firstName',
+        'lastName',
         'login',
         'IdRole',
         'password',
@@ -28,16 +30,7 @@ class User extends Model implements IdentityInterface
         });
     }
 
-    public function isAdmin()
-    {
-        $user= Auth::user();
 
-        if($user->IdRole == 1){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
     //Выборка пользователя по первичному ключу
     public function findIdentity(int $id)

@@ -10,9 +10,10 @@ class AdminMiddleware
 {
     public function handle(Request $request)
     {
+        $user= Auth::user();
 
-        if(User::isAdmin()){
-            app()->route->redirect('/logout');
+        if($user->IdRole == 1){
+            app()->route->redirect('/hello');
         }
 
     }
