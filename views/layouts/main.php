@@ -31,9 +31,9 @@
                 }
             ?>
 
-            <a href="">Подразделение</a>
-            <a href="">Помещение</a>
-            <a href="">Телефоны</a>
+            <a href="<?= app()->route->getUrl('/division') ?>">Подразделение</a>
+            <a href="<?= app()->route->getUrl('/room') ?>">Помещение</a>
+            <a href="<?= app()->route->getUrl('/phone') ?>">Телефоны</a>
             <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
         <?php
         endif;

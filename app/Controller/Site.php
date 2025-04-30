@@ -51,6 +51,19 @@ class Site
         return new View('site.login', ['message' => 'Неправильные логин или пароль']);
     }
 
+    public function division():string
+    {
+        return new View('site.division');
+    }
+    public function room():string
+    {
+        return new View('site.room');
+    }
+    public function phone():string
+    {
+        return new View('site.phone');
+    }
+
     public function logout(): void
     {
         Auth::logout();
