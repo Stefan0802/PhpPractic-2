@@ -1,14 +1,14 @@
-<h2>Регистрация нового пользователя</h2>
+<h2 style="text-align: center">Регистрация нового пользователя</h2>
 <h3><?= $message ?? ''; ?></h3>
 <form method="post">
     <label for="name">Имя </label>
-    <input type="text" name="name" id="name" required>
+    <input type="text" name="name" id="name" >
     <label for="lastName">Фамилия </label>
-    <input type="text" name="lastName" id="lastName" required>
+    <input type="text" name="lastName" id="lastName" >
     <label for="login">Логин </label>
-    <input type="text" name="login" id="login" required>
+    <input type="text" name="login" id="login" >
     <label for="password">Пароль </label>
-    <input type="password" name="password" id="password" required>
+    <input type="password" name="password" id="password" >
 
     <label>
         <select name="IdRole">
