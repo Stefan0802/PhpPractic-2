@@ -45,20 +45,24 @@
 </head>
 <body>
 
+<a class="but" href="<?= app()->route->getUrl('/department/createDepartment') ?>">Создать подразделение</a>
 
 <!-- Таблица пользователей -->
 <table class="user-table">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Логин</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
-        <th>Роль</th>
+        <th>Подразделения</th>
     </tr>
     </thead>
     <tbody>
-
+    <?php
+    foreach ($departments as $department) {
+        echo "<tr>";
+        echo '<td>' . htmlspecialchars($department->id ?? '') . '</td>';
+        echo '<td>' . htmlspecialchars($department->name ?? '')  . '</td>';
+    }
+    ?>
     </tbody>
 </table>
 

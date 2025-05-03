@@ -2,6 +2,8 @@
 
 namespace Controller;
 
+use Model\Department;
+use Model\DepartmentType;
 use Model\Post;
 use Model\User;
 use Src\Auth\Auth;
@@ -29,7 +31,8 @@ class Site
             $validator = new Validator($request->all(), [
                 'name' => ['required'],
                 'login' => ['required', 'unique:users,login'],
-                'password' => ['required']
+                'password' => ['required'],
+                'idRole' => ['required']
             ], [
                 'required' => 'Поле :field пусто',
                 'unique' => 'Поле :field должно быть уникально'
@@ -47,13 +50,7 @@ class Site
         return new View('site.signup');
     }
 
-    public function create_user(Request $request): string
-    {
-        if ($request->method === 'POST' && User::create($request->all())) {
-            app()->route->redirect('/admin');
-        }
-        return new View('site.createUser');
-    }
+
 
     public function login(Request $request): string
     {
@@ -69,10 +66,6 @@ class Site
         return new View('site.login', ['message' => 'Неправильные логин или пароль']);
     }
 
-    public function division():string
-    {
-        return new View('site.division');
-    }
     public function room():string
     {
         return new View('site.room');
@@ -93,4 +86,81 @@ class Site
         $users = User::all();
         return (new View())->render('site.admin', ['users' => $users]);
     }
+
+    public function create_user(Request $request): string
+    {
+        if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+                'login' => ['required', 'unique:users,login'],
+                'password' => ['required'],
+                'idRole' => ['required']
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
+            ]);
+
+            if($validator->fails()){
+                return new View('site.signup',
+                     ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+                }
+
+            User::create($request->all());
+            app()->route->redirect('/admin');
+        }
+        return new View('site.createUser');
+    }
+
+    public function view_department(Request $request): string
+    {
+        $departments = Department::all();
+        return (new View())->render('site.department', ['departments' => $departments]);
+    }
+
+    public function create_department(Request $request): string
+    {
+        if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+            ]);
+
+            if($validator->fails()){
+                return new View('site.create_department',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+                Department::create($request->all());
+                app()->route->redirect('/department');
+        }else{
+            $types = DepartmentType::all();
+        }
+        return (new View())->render('site.create_department', ['types' => $types]);
+    }
+
+    public function view_type_department(Request $request): string
+    {
+        $types = DepartmentType::all();
+        return (new View())->render('site.type_department', ['types' => $types]);
+    }
+
+    public function create_type_department(Request $request): string
+    {
+        $validator = new Validator($request->all(), [
+            'name' => ['required'],
+        ], [
+            'required' => 'Поле :field пусто',
+        ]);
+
+        if($validator->fails()){
+            return new View('site.signup',
+                ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+        }
+        if ($request->method === 'POST' && DepartmentType::create($request->all())) {
+            app()->route->redirect('/admin');
+        }
+        return new View('site.type_department');
+    }
+
 }

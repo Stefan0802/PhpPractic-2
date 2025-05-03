@@ -1,6 +1,7 @@
 <h2 style="text-align: center">Регистрация нового пользователя</h2>
 <h3><?= $message ?? ''; ?></h3>
 <form method="post">
+    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label for="name">Имя </label>
     <input type="text" name="name" id="name" >
     <label for="lastName">Фамилия </label>
@@ -11,9 +12,9 @@
     <input type="password" name="password" id="password" >
 
     <label>
-        <select name="IdRole">
-            <option value="1">Обычный смертный</option>
-            <option value="2">Админ</option>
+        <select name="idRole">
+            <option style="background-color: red" value="1">Обычный смертный</option>
+            <option style="background-color: blue" value="2">Админ</option>
         </select>
     </label>
     <button>Зарегистрироваться</button>

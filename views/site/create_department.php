@@ -1,20 +1,17 @@
-<h2 style="text-align: center">Создание нового пользователя</h2>
+<h2 style="text-align: center">Создание нового подразделения</h2>
 <h3><?= $message ?? ''; ?></h3>
 <form method="post">
     <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label for="name">Имя </label>
-    <input type="text" name="name" id="name" required>
-    <label for="lastName">Фамилия </label>
-    <input type="text" name="lastName" id="lastName" required>
-    <label for="login">Логин </label>
-    <input type="text" name="login" id="login" required>
-    <label for="password">Пароль </label>
-    <input type="password" name="password" id="password" required>
+    <input type="text" name="name" id="name">
 
     <label>
-        <select name="idRole" style="background-color: yellow">
-            <option style="background-color: red" value="1" selected>Обычный смертный</option>
-            <option style="background-color: blue"  value="2">Админ</option>
+        <select name="IdRole" style="background-color: yellow">
+            <?php
+            foreach ($types as $type) {
+                echo '<option value=" ' . $type->id  . ' ">' . $type->name . '</option>';
+            }
+            ?>
         </select>
     </label>
     <button>Создать</button>

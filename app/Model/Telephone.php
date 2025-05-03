@@ -1,6 +1,6 @@
 <?php
 
-namespace Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -8,13 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Telephone extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+
     protected $fillable = [
-        'IdPhone',
         'number',
-        'IdRoom'
+        'idUser',
+        'idRoom',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'idUser');
+    }
 
-
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'idRoom');
+    }
 }

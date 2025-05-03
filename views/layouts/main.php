@@ -31,7 +31,7 @@
                 }
             ?>
 
-            <a href="<?= app()->route->getUrl('/division') ?>">Подразделение</a>
+            <a href="<?= app()->route->getUrl('/department') ?>">Подразделение</a>
             <a href="<?= app()->route->getUrl('/room') ?>">Помещение</a>
             <a href="<?= app()->route->getUrl('/phone') ?>">Телефоны</a>
             <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
