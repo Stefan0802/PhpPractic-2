@@ -18,6 +18,7 @@ class User extends Model implements IdentityInterface
         'login',
         'password',
         'idRole',
+        'idPhone',
         'idDepartment',
     ];
 

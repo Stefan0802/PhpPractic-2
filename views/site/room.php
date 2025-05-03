@@ -48,6 +48,14 @@
 <a class="but" href="<?= app()->route->getUrl('/room/createRoom') ?>">Создать помещение</a>
 <a class="but" href="<?= app()->route->getUrl('/room/TypeRoom') ?>">Виды помещений</a>
 
+<form action="<?= app()->route->getUrl('/room') ?>" method="GET" style="display: flex; justify-content: center; flex-direction: column; width: 200px; margin: 0 auto">
+    <label>
+        <input type="text" name="search_field" style="text-align: center; width: 200px" value="<?= htmlspecialchars($search ?? '') ?>">
+    </label>
+    <button type="submit" style="width: 150px; margin: 0 auto; border-radius: 5px; background-color: greenyellow">Найти</button>
+</form>
+
+
 <!-- Таблица пользователей -->
 <table class="user-table">
     <thead>

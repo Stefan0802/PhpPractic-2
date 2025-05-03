@@ -13,7 +13,6 @@ class Telephone extends Model
 
     protected $fillable = [
         'number',
-        'idUser',
         'idRoom',
     ];
 

@@ -121,7 +121,19 @@ class Site
 
     public function view_department(Request $request): string
     {
-        $departments = Department::all();
+
+        $query = Department::query();
+
+        if($search = $request->get('search_field')){
+            $search = trim($search);
+            $query->where(function($q) use ($search){
+                $q->where('name', 'LIKE', "%{$search}%");
+
+            });
+        }
+
+        $departments = $query->get();
+
         $types = DepartmentType::all();
 
         // массив "id => name"
@@ -185,7 +197,21 @@ class Site
 
     public function view_room(Request $request): string
     {
-        $rooms = Room::all();
+
+
+        $query = Room::query();
+
+        if($search = $request->get('search_field')){
+            $search = trim($search);
+            $query->where(function($q) use ($search){
+                $q->where('name', 'LIKE', "%{$search}%");
+
+            });
+        }
+
+        $rooms = $query->get();
+
+
         $types = RoomType::all();
         $department = Department::all();
 
@@ -249,7 +275,7 @@ class Site
             app()->route->redirect('/room/TypeRoom');
         }else{
             $types = RoomType::all();
-            return (new View())->render('site.type_department', ['types' => $types]);
+            return (new View())->render('site.type_room', ['types' => $types]);
         }
         return new View('site.type_room');
     }
@@ -270,7 +296,7 @@ class Site
 
         $phones = $query->get();
 
-        return (new View())->render('site.admin', ['phones' => $phones, 'request' => $request]);
+        return (new View())->render('site.phone', ['phones' => $phones, 'request' => $request]);
     }
 
 
@@ -278,7 +304,7 @@ class Site
     {
         if ($request->method === 'POST') {
             $validator = new Validator($request->all(), [
-                'name' => ['required'],
+                'number' => ['required'],
             ], [
                 'required' => 'Поле :field пусто',
             ]);
@@ -288,10 +314,12 @@ class Site
                     ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
             }
 
-            Room::create($request->all());
-            app()->route->redirect('/room');
+            Telephone::create($request->all());
+            app()->route->redirect('/phone');
+        }else{
+            $rooms = Room::all();
         }
-        return new View('site.create_room');
+        return (new View())->render('site.create_phone', ['rooms' => $rooms]);
     }
 
 }

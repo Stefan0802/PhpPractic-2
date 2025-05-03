@@ -1,4 +1,4 @@
-<h2 style="text-align: center">Создание нового вида подразделения</h2>
+<h2 style="text-align: center">Создание нового вида помещения</h2>
 <h3><?= $message ?? ''; ?></h3>
 <form method="post">
     <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>

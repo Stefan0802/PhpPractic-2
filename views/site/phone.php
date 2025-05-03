@@ -48,7 +48,7 @@
 <a class="but" href="<?= app()->route->getUrl('/phone/createPhone') ?>">Создать телефон</a>
 
 
-<form action="<?= app()->route->getUrl('/admin') ?>" method="GET" style="display: flex; justify-content: center; flex-direction: column; width: 200px; margin: 0 auto">
+<form action="<?= app()->route->getUrl('/phone') ?>" method="GET" style="display: flex; justify-content: center; flex-direction: column; width: 200px; margin: 0 auto">
     <label>
         <input type="text" name="search_field" style="text-align: center; width: 200px" value="<?= htmlspecialchars($search ?? '') ?>">
     </label>
@@ -61,7 +61,6 @@
     <tr>
         <th>ID</th>
         <th>Номер</th>
-        <th>Пользователь</th>
         <th>Помещение</th>
     </tr>
     </thead>
@@ -70,7 +69,7 @@
         <tr>
             <td><?= htmlspecialchars($phone->id) ?></td>
             <td><?= htmlspecialchars($phone->number) ?></td>
-<!--            <td>--><?php //= htmlspecialchars($user->name) ?><!--</td>-->
+            <td><?= htmlspecialchars($phone->idRoom) ?></td>
 <!--            <td>--><?php //= htmlspecialchars($user->lastName) ?><!--</td>-->
 <!--            <td>--><?php //= $user->idRole == 1 ? 'Пользователь' : 'Админ' ?><!--</td>-->
         </tr>
