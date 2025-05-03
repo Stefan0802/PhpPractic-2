@@ -46,6 +46,7 @@
 <body>
 
 <a class="but" href="<?= app()->route->getUrl('/department/createDepartment') ?>">Создать подразделение</a>
+<a class="but" href="<?= app()->route->getUrl('/department/TypeDepartment') ?>">Виды подразделения</a>
 
 <!-- Таблица пользователей -->
 <table class="user-table">
@@ -53,6 +54,7 @@
     <tr>
         <th>ID</th>
         <th>Подразделения</th>
+        <th>Вид подразделения</th>
     </tr>
     </thead>
     <tbody>
@@ -61,6 +63,8 @@
         echo "<tr>";
         echo '<td>' . htmlspecialchars($department->id ?? '') . '</td>';
         echo '<td>' . htmlspecialchars($department->name ?? '')  . '</td>';
+        echo '<td>' . htmlspecialchars($typeNames[$department->idDepartmentType] ?? '' ). '</td>';
+        echo "</tr>";
     }
     ?>
     </tbody>

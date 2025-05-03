@@ -6,7 +6,7 @@
     <input type="text" name="name" id="name">
 
     <label>
-        <select name="IdRole" style="background-color: yellow">
+        <select name="idDepartmentType" style="background-color: yellow">
             <?php
             foreach ($types as $type) {
                 echo '<option value=" ' . $type->id  . ' ">' . $type->name . '</option>';

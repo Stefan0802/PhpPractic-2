@@ -45,20 +45,30 @@
 </head>
 <body>
 
+<a class="but" href="<?= app()->route->getUrl('/room/createRoom') ?>">Создать помещение</a>
+<a class="but" href="<?= app()->route->getUrl('/room/TypeRoom') ?>">Виды помещений</a>
 
 <!-- Таблица пользователей -->
 <table class="user-table">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Логин</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
-        <th>Роль</th>
+        <th>Помещение</th>
+        <th>Вид помещения</th>
+        <th>Подразделение</th>
     </tr>
     </thead>
     <tbody>
-
+    <?php
+    foreach ($rooms as $room) {
+        echo "<tr>";
+        echo '<td>' . htmlspecialchars($room->id ?? '') . '</td>';
+        echo '<td>' . htmlspecialchars($room->name ?? '')  . '</td>';
+        echo '<td>' . htmlspecialchars($typeNames[$room->idRoomType] ?? '' ). '</td>';
+        echo '<td>' . htmlspecialchars($depNames[$room->idDepartment] ?? '' ). '</td>';
+        echo "</tr>";
+    }
+    ?>
     </tbody>
 </table>
 

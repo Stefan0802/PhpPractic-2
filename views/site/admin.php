@@ -47,6 +47,14 @@
 
 <a class="but" href="<?= app()->route->getUrl('/admin/createUser') ?>">Создать пользователя</a>
 
+
+<form action="<?= app()->route->getUrl('/admin') ?>" method="GET" style="display: flex; justify-content: center; flex-direction: column; width: 200px; margin: 0 auto">
+    <label>
+        <input type="text" name="search_field" style="text-align: center; width: 200px" value="<?= htmlspecialchars($search ?? '') ?>">
+    </label>
+    <button type="submit" style="width: 150px; margin: 0 auto; border-radius: 5px; background-color: greenyellow">Найти</button>
+</form>
+
 <!-- Таблица пользователей -->
 <table class="user-table">
     <thead>
@@ -59,21 +67,15 @@
     </tr>
     </thead>
     <tbody>
-    <?php
-    foreach ($users as $user) {
-        echo "<tr>";
-        echo '<td>' . htmlspecialchars($user->id ?? '') . '</td>';
-        echo '<td>' . htmlspecialchars($user->login ?? '') . '</td>';
-        echo '<td>' . htmlspecialchars($user->name ?? '')  . '</td>';
-        echo '<td>' . htmlspecialchars($user->lastName ?? '')  . '</td>';
-        if ($user->idRole == 1) {
-            echo '<td>Пользователь</td>';
-        } else {
-            echo '<td>Админ</td>';
-        }
-        echo "</tr>";
-    }
-    ?>
+    <?php foreach ($users as $user): ?>
+        <tr>
+            <td><?= htmlspecialchars($user->id) ?></td>
+            <td><?= htmlspecialchars($user->login) ?></td>
+            <td><?= htmlspecialchars($user->name) ?></td>
+            <td><?= htmlspecialchars($user->lastName) ?></td>
+            <td><?= $user->idRole == 1 ? 'Пользователь' : 'Админ' ?></td>
+        </tr>
+    <?php endforeach; ?>
     </tbody>
 </table>
 

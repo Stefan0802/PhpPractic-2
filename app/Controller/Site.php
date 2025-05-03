@@ -2,6 +2,9 @@
 
 namespace Controller;
 
+use Model\Telephone;
+use Model\Room;
+use Model\RoomType;
 use Model\Department;
 use Model\DepartmentType;
 use Model\Post;
@@ -66,15 +69,6 @@ class Site
         return new View('site.login', ['message' => 'Неправильные логин или пароль']);
     }
 
-    public function room():string
-    {
-        return new View('site.room');
-    }
-    public function phone():string
-    {
-        return new View('site.phone');
-    }
-
     public function logout(): void
     {
         Auth::logout();
@@ -83,8 +77,22 @@ class Site
 
     public function admin(Request $request): string
     {
-        $users = User::all();
-        return (new View())->render('site.admin', ['users' => $users]);
+
+
+        $query = User::query();
+
+        if($search = $request->get('search_field')){
+            $search = trim($search);
+            $query->where(function($q) use ($search){
+                $q->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('lastName', 'LIKE', "%{$search}%")
+                    ->orWhere('login', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $users = $query->get();
+
+        return (new View())->render('site.admin', ['users' => $users, 'request' => $request]);
     }
 
     public function create_user(Request $request): string
@@ -114,7 +122,19 @@ class Site
     public function view_department(Request $request): string
     {
         $departments = Department::all();
-        return (new View())->render('site.department', ['departments' => $departments]);
+        $types = DepartmentType::all();
+
+        // массив "id => name"
+        $typeNames = [];
+        foreach ($types as $type) {
+            $typeNames[$type->id] = $type->name;
+        }
+
+        return (new View())->render('site.department', [
+            'departments' => $departments,
+            'typeNames' => $typeNames,
+            'types' => $types
+        ]);
     }
 
     public function create_department(Request $request): string
@@ -139,28 +159,139 @@ class Site
         return (new View())->render('site.create_department', ['types' => $types]);
     }
 
-    public function view_type_department(Request $request): string
-    {
-        $types = DepartmentType::all();
-        return (new View())->render('site.type_department', ['types' => $types]);
-    }
-
     public function create_type_department(Request $request): string
     {
-        $validator = new Validator($request->all(), [
-            'name' => ['required'],
-        ], [
-            'required' => 'Поле :field пусто',
-        ]);
+        if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+            ]);
 
-        if($validator->fails()){
-            return new View('site.signup',
-                ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
-        }
-        if ($request->method === 'POST' && DepartmentType::create($request->all())) {
-            app()->route->redirect('/admin');
+            if($validator->fails()){
+                return new View('site.type_department',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+            DepartmentType::create($request->all());
+            app()->route->redirect('/department/TypeDepartment');
+        }else{
+            $types = DepartmentType::all();
+            return (new View())->render('site.type_department', ['types' => $types]);
         }
         return new View('site.type_department');
+    }
+
+
+    public function view_room(Request $request): string
+    {
+        $rooms = Room::all();
+        $types = RoomType::all();
+        $department = Department::all();
+
+        $depNames = [];
+        foreach ($department as $dep) {
+            $depNames[$dep->id] = $dep->name;
+        }
+
+        // массив "id => name"
+        $typeNames = [];
+        foreach ($types as $type) {
+            $typeNames[$type->id] = $type->name;
+        }
+
+        return (new View())->render('site.room', [
+            'rooms' => $rooms,
+            'typeNames' => $typeNames,
+            'types' => $types,
+            'depNames' => $depNames
+        ]);
+    }
+
+    public function create_room(Request $request): string
+    {
+        if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+            ]);
+
+            if($validator->fails()){
+                return new View('site.create_department',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+            Room::create($request->all());
+            app()->route->redirect('/room');
+        }else{
+            $typesRooms = RoomType::all();
+            $typesDepartments = Department::all();
+        }
+        return (new View())->render('site.create_room', ['typesRooms' => $typesRooms, 'typesDepartments' => $typesDepartments]);
+    }
+
+    public function create_type_room(Request $request): string
+    {
+        if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+            ]);
+
+            if($validator->fails()){
+                return new View('site.type_room',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+            RoomType::create($request->all());
+            app()->route->redirect('/room/TypeRoom');
+        }else{
+            $types = RoomType::all();
+            return (new View())->render('site.type_department', ['types' => $types]);
+        }
+        return new View('site.type_room');
+    }
+
+
+    public function view_phone(Request $request): string
+    {
+
+
+        $query = Telephone::query();
+
+        if($search = $request->get('search_field')){
+            $search = trim($search);
+            $query->where(function($q) use ($search){
+                $q->where('number', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $phones = $query->get();
+
+        return (new View())->render('site.admin', ['phones' => $phones, 'request' => $request]);
+    }
+
+
+    public function create_phone(Request $request): string
+    {
+        if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+            ]);
+
+            if($validator->fails()){
+                return new View('site.create_department',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+            Room::create($request->all());
+            app()->route->redirect('/room');
+        }
+        return new View('site.create_room');
     }
 
 }

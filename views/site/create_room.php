@@ -1,53 +1,37 @@
-<h2 style="text-align: center">Создание нового подразделения</h2>
+<h2 style="text-align: center">Создание нового помещения</h2>
 <h3><?= $message ?? ''; ?></h3>
 <form method="post">
     <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label for="name">Имя </label>
     <input type="text" name="name" id="name">
 
+    <label>Выберите вид помещения
+        <select name="idRoomType" style="background-color: yellow">
+            <?php
+            foreach ($typesRooms as $type) {
+                echo '<option value=" ' . $type->id  . ' ">' . $type->name . '</option>';
+            }
+            ?>
+        </select>
+    </label>
+
+    <label>Выберите подразделение
+        <select name="idDepartment" style="background-color: yellow">
+            <?php
+            foreach ($typesDepartments as $type) {
+                echo '<option value=" ' . $type->id  . ' ">' . $type->name . '</option>';
+            }
+            ?>
+        </select>
+    </label>
+
     <button>Создать</button>
 </form>
 
 
-<footer>
-    <table class="user-table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Название</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach ($types as $type) {
-            echo "<tr>";
-            echo '<td>' . htmlspecialchars($type->id ?? '') . '</td>';
-            echo '<td>' . htmlspecialchars($type->name ?? '')  . '</td>';
-            echo "</tr>";
-        }
-        ?>
-        </tbody>
-</footer>
-
 <style>
-    .user-table {
-        width: 80%;
-        margin: 20px auto;
-        border-collapse: collapse;
-        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    }
+    body{
 
-    .user-table th,
-    .user-table td {
-        padding: 12px 15px;
-        text-align: left;
-        border: 1px solid black; /* Черная рамка */
-    }
-
-    .user-table th {
-        background-color: #ffffff; /* Белый фон */
-        font-weight: bold;
-        color: #333;
     }
     form{
         display: flex;

@@ -45,20 +45,36 @@
 </head>
 <body>
 
+<a class="but" href="<?= app()->route->getUrl('/phone/createPhone') ?>">Создать телефон</a>
+
+
+<form action="<?= app()->route->getUrl('/admin') ?>" method="GET" style="display: flex; justify-content: center; flex-direction: column; width: 200px; margin: 0 auto">
+    <label>
+        <input type="text" name="search_field" style="text-align: center; width: 200px" value="<?= htmlspecialchars($search ?? '') ?>">
+    </label>
+    <button type="submit" style="width: 150px; margin: 0 auto; border-radius: 5px; background-color: greenyellow">Найти</button>
+</form>
 
 <!-- Таблица пользователей -->
 <table class="user-table">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Логин</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
-        <th>Роль</th>
+        <th>Номер</th>
+        <th>Пользователь</th>
+        <th>Помещение</th>
     </tr>
     </thead>
     <tbody>
-
+    <?php foreach ($phones as $phone): ?>
+        <tr>
+            <td><?= htmlspecialchars($phone->id) ?></td>
+            <td><?= htmlspecialchars($phone->number) ?></td>
+<!--            <td>--><?php //= htmlspecialchars($user->name) ?><!--</td>-->
+<!--            <td>--><?php //= htmlspecialchars($user->lastName) ?><!--</td>-->
+<!--            <td>--><?php //= $user->idRole == 1 ? 'Пользователь' : 'Админ' ?><!--</td>-->
+        </tr>
+    <?php endforeach; ?>
     </tbody>
 </table>
 
