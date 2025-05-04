@@ -13,7 +13,6 @@ use Src\Auth\Auth;
 use Src\Request;
 use Src\View;
 use Src\Validator\Validator;
-
 class Site
 {
     public function index(Request $request): string
@@ -98,20 +97,34 @@ class Site
     public function create_user(Request $request): string
     {
         if ($request->method === 'POST') {
+            $data = $request->all();
             $validator = new Validator($request->all(), [
                 'name' => ['required'],
                 'login' => ['required', 'unique:users,login'],
-                'password' => ['required'],
-                'idRole' => ['required']
+                'password' => ['required', 'password'],
+                'idRole' => ['required'],
+                'avatar' => ['avatar:user,avatar'],
             ], [
                 'required' => 'Поле :field пусто',
                 'unique' => 'Поле :field должно быть уникально'
             ]);
 
+
             if($validator->fails()){
                 return new View('site.signup',
                      ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
                 }
+
+
+            if ($request->avatar) {
+                $user = new User();
+                $avatarPath = $user->uploadAvatar($request->file('avatar'));
+
+                if ($avatarPath) {
+                    $data['avatar'] = $avatarPath;
+                }
+            }
+
 
             User::create($request->all());
             app()->route->redirect('/admin');
@@ -300,26 +313,28 @@ class Site
     }
 
 
+
+
     public function create_phone(Request $request): string
     {
         if ($request->method === 'POST') {
-            $validator = new Validator($request->all(), [
-                'number' => ['required'],
-            ], [
-                'required' => 'Поле :field пусто',
-            ]);
-
-            if($validator->fails()){
+            $data = [
+                'number' => $request->post('number'),
+            ];
+            $validator = TelephoneValidator::make($data);
+            if ($validator->fails()) {
+                $errors = $validator->errors();
                 return new View('site.create_department',
-                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
-            }
+                ['message' => $errors]);
 
             Telephone::create($request->all());
             app()->route->redirect('/phone');
-        }else{
-            $rooms = Room::all();
+            } else {
+                $rooms = Room::all();
+            }
+            return (new View())->render('site.create_phone', ['rooms' => $rooms]);
         }
-        return (new View())->render('site.create_phone', ['rooms' => $rooms]);
     }
+
 
 }

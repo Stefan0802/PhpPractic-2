@@ -3,7 +3,7 @@
 <form method="post">
     <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label for="number">Номер</label>
-    <input type="number" name="number" id="number">
+    <input type="text" name="number" id="number">
 
     <label>Выберите помещение
         <select name="idRoom" style="background-color: yellow">

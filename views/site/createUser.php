@@ -1,6 +1,6 @@
 <h2 style="text-align: center">Создание нового пользователя</h2>
 <h3><?= $message ?? ''; ?></h3>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label for="name">Имя </label>
     <input type="text" name="name" id="name" required>
@@ -10,6 +10,8 @@
     <input type="text" name="login" id="login" required>
     <label for="password">Пароль </label>
     <input type="password" name="password" id="password" required>
+    <label for="avatar">Аватарка</label>
+    <input type="file" name="avatar" id="avatar">
 
     <label>
         <select name="idRole" style="background-color: yellow">

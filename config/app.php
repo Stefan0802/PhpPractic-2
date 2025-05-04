@@ -11,7 +11,9 @@ return [
     ],
     'validators' => [
         'required' => Validators\RequireValidator::class,
-        'unique' => Validators\UniqueValidator::class
+        'unique' => Validators\UniqueValidator::class,
+        'avatar' => Validators\AvatarValidator::class,
+        'password' => Validators\PasswordValidator::class,
     ],
     'routeAppMiddleware' => [
         'csrf' => \Middlewares\CSRFMiddleware::class,

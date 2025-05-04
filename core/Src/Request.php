@@ -32,6 +32,11 @@ class Request
         return $this->body[$field] ?? $default;
     }
 
+    public function file(string $name): ?array
+    {
+        return $_FILES[$name] ?? null;
+    }
+
     public function files(): array
     {
         return $_FILES;
@@ -44,4 +49,10 @@ class Request
         }
         throw new Error('Accessing a non-existent property');
     }
+
+    public function post(string $key)
+    {
+        return $_POST[$key] ?? null;
+    }
+
 }

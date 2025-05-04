@@ -64,6 +64,7 @@
         <th>Имя</th>
         <th>Фамилия</th>
         <th>Роль</th>
+        <th>Аватар</th>
     </tr>
     </thead>
     <tbody>
@@ -74,6 +75,9 @@
             <td><?= htmlspecialchars($user->name) ?></td>
             <td><?= htmlspecialchars($user->lastName) ?></td>
             <td><?= $user->idRole == 1 ? 'Пользователь' : 'Админ' ?></td>
+            <td><?php if ($user->avatar): ?>
+                    <img src="<?= htmlspecialchars($user->avatar) ?>" width="100" height="100" alt="Аватар">
+                <?php endif; ?></td>
         </tr>
     <?php endforeach; ?>
     </tbody>
