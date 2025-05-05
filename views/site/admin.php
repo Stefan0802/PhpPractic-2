@@ -81,6 +81,7 @@
         </tr>
     <?php endforeach; ?>
     </tbody>
+    <h1><? $count ?></h1>
 </table>
 
 

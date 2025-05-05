@@ -320,23 +320,26 @@ class Site
 
     public function create_phone(Request $request): string
     {
+        $rooms = 0;
         if ($request->method === 'POST') {
-            $data = [
-                'number' => $request->post('number'),
-            ];
-            $validator = TelephoneValidator::make($data);
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return new View('site.create_department',
-                ['message' => $errors]);
 
-            Telephone::create($request->all());
-            app()->route->redirect('/phone');
+            $validator = new Validator($request->all(), [
+                'number' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+            ]);
+
+            if($validator->fails()){
+                return new View('site.type_room',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+                    Telephone::create($request->all());
+                    app()->route->redirect('/phone');
             } else {
                 $rooms = Room::all();
             }
-            return (new View())->render('site.create_phone', ['rooms' => $rooms]);
-        }
+        return (new View())->render('site.create_phone', ['rooms' => $rooms]);
     }
 
 
