@@ -54,14 +54,13 @@ class User extends Model implements IdentityInterface
 
     public function uploadAvatar(array $file): ?string
     {
-
         if ($file['error'] !== UPLOAD_ERR_OK) {
             return null;
         }
 
         $fileTmpPath = $file['tmp_name'];
         $fileName = $file['name'];
-        $fileNameCmps = explode(".", $fileName);
+        $fileNameCmps = explode('.', $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
 
         $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
@@ -70,9 +69,20 @@ class User extends Model implements IdentityInterface
         if (!in_array($fileExtension, $allowedExtensions)) {
             return null;
         }
-        $fullPath = 'uploads/avatars/' . $newFileName;
-        move_uploaded_file($fileTmpPath, $fullPath);
-        return 'public/' . $fullPath;
+
+        $uploadFileDir = __DIR__ . '/../../public/uploads/avatars/';
+
+        if (!is_dir($uploadFileDir)) {
+            mkdir($uploadFileDir, 0777, true);
+        }
+
+        $dest_path = $uploadFileDir . $newFileName;
+
+        if (move_uploaded_file($fileTmpPath, $dest_path)) {
+            return "/uploads/avatars/" . $newFileName;
+        }
+
+        return null;
     }
 
 

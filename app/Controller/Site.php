@@ -98,6 +98,7 @@ class Site
     {
         if ($request->method === 'POST') {
             $data = $request->all();
+
             $validator = new Validator($request->all(), [
                 'name' => ['required'],
                 'login' => ['required', 'unique:users,login'],
@@ -111,9 +112,10 @@ class Site
 
 
             if($validator->fails()){
-                return new View('site.signup',
+                return new View('site.createUser',
                      ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
                 }
+
 
 
             if ($request->avatar) {
@@ -122,11 +124,12 @@ class Site
 
                 if ($avatarPath) {
                     $data['avatar'] = $avatarPath;
+                    $user->update(['avatar'=> $avatarPath]);
                 }
             }
 
+            User::create($data);
 
-            User::create($request->all());
             app()->route->redirect('/admin');
         }
         return new View('site.createUser');
