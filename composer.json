@@ -1,6 +1,6 @@
 {
-    "name": "stefan0802/php_practic-1",
-    "description": "practic work",
+    "name": "stefan0802/php_practic-2",
+    "description": "lite mvc framework",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -23,3 +23,4 @@
         }
     }
 }
+
