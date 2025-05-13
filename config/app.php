@@ -1,4 +1,5 @@
 <?php
+
 return [
     //Класс аутентификации
     'auth' => \Src\Auth\Auth::class,
@@ -10,7 +11,7 @@ return [
         'isAdmin' => \Middlewares\AdminMiddleware::class,
     ],
     'validators' => [
-        'required' => Validators\RequireValidator::class,
+        'required' => \vendor\stefan0802\validator\Validators\RequireValidator::class,
         'unique' => Validators\UniqueValidator::class,
         'number' => Validators\NumberValidator::class,
         'avatar' => Validators\AvatarValidator::class,

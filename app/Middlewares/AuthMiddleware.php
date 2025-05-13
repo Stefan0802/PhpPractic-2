@@ -11,7 +11,7 @@ class AuthMiddleware
     {
         //Если пользователь не авторизован, то редирект на страницу входа
         if (!Auth::check()) {
-            app()->route->redirect('/login');
+            app()->route->redirect('/');
         }
     }
 }
